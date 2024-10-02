@@ -31,4 +31,10 @@ class Review(models.Model):
     def __str__(self):
         return f'{self.product.name} - {self.rating}/5 by {self.user.username}'
     
-    
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, related_name='wishlists')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}\'s wishlist'
