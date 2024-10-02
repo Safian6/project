@@ -9,4 +9,7 @@ urlpatterns = [
     # Category Endpoints
     path('categories/', views.CategoryListCreate.as_view(), name='category-list-create'),
     path('categories/<int:pk>/', views.CategoryDetail.as_view(), name='category-detail'),
+    path('reviews/', views.ReviewListCreate.as_view(), name='review-list-create'),
+    path('reviews/<int:pk>/', views.ReviewDetail.as_view(), name='review-detail'),
 ]
+
