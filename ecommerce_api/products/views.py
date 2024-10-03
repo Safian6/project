@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
-from .models import Product, Category, Review
-from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
+from .models import Product, Category, Review, Wishlist
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer, WishlistSerializer
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
@@ -52,3 +52,24 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         # Restrict users to only update/delete their own reviews
         return self.queryset.filter(user=self.request.user)
+    
+
+
+class WishlistListCreate(generics.ListCreateAPIView):
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Set the user automatically to the logged-in user
+        serializer.save(user=self.request.user)
+
+class WishlistDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Restrict users to only update/delete their own wishlists
+        return self.queryset.filter(user=self.request.user)
+
